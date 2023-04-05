@@ -74,10 +74,11 @@ function init () {
             </li>
             `
         })
+        //creates text that the user will read on the page by grabbing information from the 'questions' array
         quizStr += `
             <form>
             <h1>${question.q}</h1>
-            <div class="alert">Alert Text</div>
+            <div class="alert"></div>
             <ul style="display: flex; flex-direction: column">
                 ${answerStr}
             </ul>
@@ -91,18 +92,27 @@ function init () {
     quizId.addEventListener('submit',function(e) {
         e.preventDefault();
         console.log(e);
-        const selectedInput= e.target.querySelector('input[type=radio]:checked');
-        console.log(selectedInput);
-        
-    } ) 
+        const selectedInput= e.target.querySelector('input[type=radio]:checked');//to ensure that the answer being evaluated is the one that's selected by user
+        const alert= e.target.querySelector('div.alert');
+        if (selectedInput === null) {
+            alert.innerHTML= 'Please select an answer'
+        } else if (selectedInput.dataset.correct === 'true') {
+            alert.innerHTML= "That's correct!"
+        } else {
+            alert.innerHTML = 'Try Again'
+        }
+
+    })  
+    }  
     
-} //end of init;
+ //end of init;
 init();
 
+//function used to randomize the order of the answers by randomizing the number created from the function randomRange
 function random(n) {
     return Math.floor(Math.random()* n);
 }
-
+//Function used to create range of numbers to pick answer order
 function randomRange(x) {
     const arr = [];
     for (let i = 0; i < x; i++){
@@ -119,7 +129,7 @@ function randomRange(x) {
     }
     return randomArr;
 }
-console.log(randomRange(10));
+
 
 
 
