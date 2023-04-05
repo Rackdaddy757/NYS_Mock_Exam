@@ -1,3 +1,4 @@
+//The variable contains all of the questions and answers for the test
 const questions = [
     {
         q: "How long is a NYS Guide license valid?",
@@ -42,28 +43,32 @@ const questions = [
     }
 
 ];
-
+//This function loops through "questions" and allows the user to take the test
 function init () {
     const quizId= document.getElementById('quiz');
 
-    //loop through the array of questions
-    //for each question make some html 
+  
     let quizStr= '';
     // form
-    //      h1
-    //      div.alert
+   
     //      ul
     //          li
     //            ... 
-    //      button submit
-
+   
+//This is the function that loops through the variable 'questions'
     questions.forEach(function(question, qIndex) {
         let answerStr = '';
+        const answerOrder = randomRange(question.a.length)
         question.a.forEach(function (answer, aIndex) {
             answerStr += `
-            <li>
+            <li style="order: ${answerOrder[aIndex]}">
                 <label>
-                    <input type="radio" name= "question-${qIndex}">
+                    <input 
+                        type="radio" 
+                        name= "question-${qIndex}" 
+                        class= "tQuestion-${qIndex}"
+                        data-correct= "${question.correct === aIndex}"
+                    >
                     ${answer}
                 </label>
             </li>
@@ -72,16 +77,54 @@ function init () {
         quizStr += `
             <form>
             <h1>${question.q}</h1>
-            <ul>
+            <div class="alert">Alert Text</div>
+            <ul style="display: flex; flex-direction: column">
                 ${answerStr}
             </ul>
+            <button type="submit">Submit</button>
             </form>
         `
         
 
     });
     quizId.innerHTML= quizStr;
-}
+    quizId.addEventListener('submit',function(e) {
+        e.preventDefault();
+        console.log(e);
+        const selectedInput= e.target.querySelector('input[type=radio]:checked');
+        console.log(selectedInput);
+        
+    } ) 
+    
+} //end of init;
 init();
+
+function random(n) {
+    return Math.floor(Math.random()* n);
+}
+
+function randomRange(x) {
+    const arr = [];
+    for (let i = 0; i < x; i++){
+        arr.push(i);
+    }
+    const randomArr= []
+    while(arr.length > 0) {
+        const randomIndex = random(arr.length)
+        const randomNumber = arr[random(randomIndex)];
+        randomArr.push(randomNumber);
+        arr.splice(randomIndex, 1);
+        
+        
+    }
+    return randomArr;
+}
+console.log(randomRange(10));
+
+
+
+//for (let i = 0; i < 100; i++) {
+  //  random(10)
+//}
 
 
